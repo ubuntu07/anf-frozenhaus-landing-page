@@ -9,7 +9,8 @@
      7. Feature: scroll reveal
      8. Feature: chatbot (pure logic + UI)
      9. Feature: ask-price
-    10. Boot
+     10. Public HTML bridge
+     11. Boot
    ========================================================= */
 
 /* ---------- 1. CONFIG ---------- */
@@ -403,7 +404,7 @@ const Chatbot = (() => {
     });
   }
 
-  return { init, getReply, pickIntent, sendUserMessage, open: () => setChatOpen(true) };
+  return { init, getReply, pickIntent, sendUserMessage, hideQuickReplies, open: () => setChatOpen(true) };
 })();
 
 /* ---------- 9. ASK-PRICE ---------- */
@@ -436,7 +437,12 @@ const AskPrice = (() => {
   return { init };
 })();
 
-/* ---------- 10. BOOT ---------- */
+/* ---------- 10. PUBLIC HTML BRIDGE ---------- */
+window.showPage   = (name) => Router.showPage(name);
+window.goProducts = ()    => Router.goProducts();
+window.openChat   = ()    => Chatbot.open();
+
+/* ---------- 11. BOOT ---------- */
 function init() {
   Theme.init();
   Router.init();
