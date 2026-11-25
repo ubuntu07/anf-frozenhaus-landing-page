@@ -1,313 +1,456 @@
-/* ---------- ANTI-FLASH THEME ---------- */
-(function(){
-  try{
-    if(localStorage.getItem('theme') === 'dark'){
-      document.documentElement.setAttribute('data-theme','dark');
-    }
-  }catch(e){}
-})();
+/* =========================================================
+   Structure:
+     1. Config & constants
+     2. Tiny DOM helpers
+     3. Feature: theme
+     4. Feature: router / nav / scroll
+     5. Feature: parallax
+     6. Feature: snow
+     7. Feature: scroll reveal
+     8. Feature: chatbot (pure logic + UI)
+     9. Feature: ask-price
+    10. Boot
+   ========================================================= */
 
-const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-/* ---------- PAGE ROUTER ---------- */
-function showPage(name){
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const target = document.getElementById('page-' + name);
-  if(target) target.classList.add('active');
-  window.scrollTo({ top:0, behavior:'auto' });
-  updateNav();
-  observeReveals();
-}
-
-function goProducts(){
-  showPage('home');
-  setTimeout(() => {
-    const el = document.getElementById('products');
-    if(el) el.scrollIntoView({ behavior:'smooth', block:'start' });
-  }, 60);
-}
-
-/* ---------- NAV + SCROLL PROGRESS ---------- */
-const nav = document.getElementById('nav');
-const progress = document.getElementById('scrollProgress');
-
-function updateNav(){
-  if(window.scrollY > 60) nav.classList.add('scrolled');
-  else nav.classList.remove('scrolled');
-
-  const docH = document.documentElement.scrollHeight - window.innerHeight;
-  const pct = docH > 0 ? (window.scrollY / docH) * 100 : 0;
-  if(progress) progress.style.width = pct + '%';
-}
-window.addEventListener('scroll', updateNav, { passive:true });
-window.addEventListener('resize', updateNav);
-updateNav();
-
-/* ---------- PARALLAX — HERO BG ---------- */
-const heroBg = document.getElementById('heroBg');
-let bgTicking = false;
-window.addEventListener('scroll', () => {
-  if(bgTicking || REDUCE) return;
-  bgTicking = true;
-  requestAnimationFrame(() => {
-    if(heroBg){
-      const y = window.scrollY;
-      if(y < window.innerHeight * 1.3){
-        heroBg.style.transform = 'translate3d(0,' + (y * 0.42) + 'px,0) scale(1.05)';
-      }
-    }
-    bgTicking = false;
-  });
-}, { passive:true });
-
-/* ---------- PARALLAX — FLOATING CARDS ---------- */
-(function heroCardParallax(){
-  const els = Array.from(document.querySelectorAll('[data-parallax]'));
-  if(!els.length || REDUCE) return;
-
-  let mx = 0, my = 0, tx = 0, ty = 0;
-
-  document.addEventListener('mousemove', (e) => {
-    tx = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
-    ty = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
-  });
-
-  function loop(){
-    mx += (tx - mx) * 0.07;
-    my += (ty - my) * 0.07;
-    const sc = window.scrollY;
-
-    els.forEach(el => {
-      const rate  = parseFloat(el.dataset.parallax) || 0.1;
-      const depth = parseFloat(el.dataset.depth) || 1;
-      const x = mx * 16 * depth;
-      const y = my * 12 * depth - sc * rate * 0.35;
-      el.style.transform = 'translate3d(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px,0)';
-    });
-
-    requestAnimationFrame(loop);
-  }
-  loop();
-})();
-
-/* ---------- SNOWFLAKES ---------- */
-(function buildSnow(){
-  const snow = document.getElementById('snow');
-  if(!snow || REDUCE) return;
-  const icons = ['fa-snowflake','fa-asterisk','fa-star'];
-  for(let i = 0; i < 18; i++){
-    const el = document.createElement('i');
-    el.className = 'fa-solid ' + icons[Math.floor(Math.random() * icons.length)];
-    el.style.left = (Math.random() * 100) + '%';
-    el.style.fontSize = (8 + Math.random() * 14) + 'px';
-    el.style.animationDuration = (9 + Math.random() * 12) + 's';
-    el.style.animationDelay = (Math.random() * 12) + 's';
-    el.style.opacity = (0.25 + Math.random() * 0.4).toFixed(2);
-    snow.appendChild(el);
-  }
-})();
-
-/* ---------- SCROLL REVEAL ---------- */
-let revealObserver;
-function observeReveals(){
-  const items = document.querySelectorAll('.page.active .reveal');
-  if(!('IntersectionObserver' in window)){
-    items.forEach(el => el.classList.add('in'));
-    return;
-  }
-  if(revealObserver) revealObserver.disconnect();
-  revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting){
-        entry.target.classList.add('in');
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold:0.12, rootMargin:'0px 0px -50px 0px' });
-
-  items.forEach(el => {
-    if(!el.classList.contains('in')) revealObserver.observe(el);
-  });
-}
-
-/* ---------- CHATBOT ---------- */
-const chatToggle   = document.getElementById('chatToggle');
-const chatWindow   = document.getElementById('chatWindow');
-const chatClose    = document.getElementById('chatClose');
-const chatBody     = document.getElementById('chatBody');
-const chatForm     = document.getElementById('chatForm');
-const chatInput    = document.getElementById('chatInput');
-const quickReplies = document.getElementById('quickReplies');
-
-function openChat(){
-  if(!chatWindow) return;
-  chatWindow.classList.add('open');
-  const dot = chatToggle && chatToggle.querySelector('.dot');
-  if(dot) dot.style.display = 'none';
-  setTimeout(() => chatInput && chatInput.focus(), 320);
-}
-
-if(chatToggle && chatWindow && chatClose){
-  chatToggle.addEventListener('click', () => {
-    const isOpen = chatWindow.classList.toggle('open');
-    if(isOpen){
-      const dot = chatToggle.querySelector('.dot');
-      if(dot) dot.style.display = 'none';
-      setTimeout(() => chatInput.focus(), 300);
-    }
-  });
-  chatClose.addEventListener('click', () => chatWindow.classList.remove('open'));
-}
-
-/* ---- Knowledge base ---- */
-const KB = {
-  products: "We carry a full frozen line: 🍤 Tempura, 🍟 French Fries, 🥟 Siomai & Siopao, 🐟 Tuna & Boneless Bangus, 🌭 Chorizo & Lumpia, plus 💧 InJoy Powders for Milk Tea, Shakes, Palamig, and Ice Scramble. Which one are you interested in?",
-  location: "📍 Main branch: Tamin Building, Barangay 5, Moreno St., Malaybalay City, Bukidnon. Second branch: F. Donggalo Building, Purok 2, Sayre Highway, Valencia City, Bukidnon. Look for the ANF Frozenhaus sign!",
-  prices: "💰 For the latest price list, please visit our store or send us a message on our Facebook page (facebook.com/anffrozenhaus). We'd be happy to send you a quote for bulk orders!",
-  hours: "🕒 Store hours may vary, so please check our Facebook page for the latest schedule. We'd love to see you!",
-  delivery: "🚚 For delivery and pickup arrangements, please message us on Facebook so we can confirm availability and logistics for your area.",
-  payment: "💳 Please message us on Facebook to confirm accepted payment methods and terms for bulk orders.",
-  reseller: "🤝 Yes! We welcome resellers and food businesses. Message us on Facebook to discuss reseller pricing and minimum order quantities.",
-  greeting: "Kumusta! 👋 Welcome to ANF Frozenhaus — Ang Imong Partner sa Negosyo. Ask me about our products, location, prices, or store hours!",
-  thanks: "You're very welcome! 😊 Salamat for choosing ANF Frozenhaus. Anything else I can help you with?",
-  fallback: "Salamat for your message! For specific inquiries, please message our Facebook page or visit us in store. Is there anything else I can help you with?"
+/* ---------- 1. CONFIG ---------- */
+const CONFIG = {
+  navScrollThreshold: 60,
+  heroParallaxRate:   0.42,
+  cardParallaxRate:   0.35,
+  cardParallaxDepthX: 16,
+  cardParallaxDepthY: 12,
+  parallaxEase:       0.07,
+  snowCount:          18,
+  snowIcons:          ['fa-snowflake', 'fa-asterisk', 'fa-star'],
+  revealThreshold:    0.12,
+  revealRootMargin:   '0px 0px -50px 0px',
+  botThinkMinMs:      900,
+  botThinkJitterMs:   700,
+  chatFocusDelayMs:   320,
 };
 
-function getReply(text){
-  const t = text.toLowerCase();
-  if(/(price|presyo|pila|magkano|cost|rate)/.test(t)) return KB.prices;
-  if(/(location|where|asa|saan|address|find|store|branch)/.test(t)) return KB.location;
-  if(/(hour|open|close|schedule|time|oras)/.test(t)) return KB.hours;
-  if(/(deliver|ship|pickup|pick up)/.test(t)) return KB.delivery;
-  if(/(payment|pay|gcash|cash|maya)/.test(t)) return KB.payment;
-  if(/(reseller|wholesale|bulk|business|partner|retail)/.test(t)) return KB.reseller;
-  if(/(product|menu|item|tempura|fries|siomai|siopao|tuna|bangus|chorizo|lumpia|injoy|milk tea|shake)/.test(t)) return KB.products;
-  if(/(hi|hello|hey|kumusta|good morning|good afternoon|good evening)/.test(t)) return KB.greeting;
-  if(/(thank|salamat|thanks)/.test(t)) return KB.thanks;
-  return KB.fallback;
+const REDUCE_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const THEME_KEY = 'theme';
+
+/* ---------- 2. DOM HELPERS ---------- */
+const $  = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+/** Add listener only if element exists. Returns el for chaining. */
+function on(el, event, handler, opts) {
+  if (el) el.addEventListener(event, handler, opts);
+  return el;
 }
 
-function addMessage(text, sender){
-  const div = document.createElement('div');
-  div.className = 'msg ' + sender;
-  div.innerHTML = text;
-  chatBody.appendChild(div);
-  chatBody.scrollTop = chatBody.scrollHeight;
-  return div;
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
-function showTyping(){
-  const div = document.createElement('div');
-  div.className = 'msg bot typing';
-  div.innerHTML = '<span></span><span></span><span></span>';
-  chatBody.appendChild(div);
-  chatBody.scrollTop = chatBody.scrollHeight;
-  return div;
-}
+/* ---------- 3. THEME ---------- */
+const Theme = (() => {
+  const root = document.documentElement;
 
-function botRespond(userText){
-  const typingEl = showTyping();
-  setTimeout(() => {
-    typingEl.remove();
-    addMessage(getReply(userText), 'bot');
-  }, 900 + Math.random() * 700);
-}
-
-function sendUserMessage(text){
-  const clean = text.trim();
-  if(!clean) return;
-  addMessage(clean.replace(/</g,'&lt;').replace(/>/g,'&gt;'), 'user');
-  chatInput.value = '';
-  if(quickReplies) quickReplies.style.display = 'none';
-  botRespond(clean);
-}
-
-if(chatForm){
-  chatForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    sendUserMessage(chatInput.value);
-  });
-}
-
-const chatSendBtn = document.getElementById('chatSend');
-if(chatSendBtn){
-  chatSendBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    sendUserMessage(chatInput.value);
-  });
-}
-
-if(quickReplies){
-  quickReplies.addEventListener('click', (e) => {
-    const btn = e.target.closest('button');
-    if(!btn) return;
-    const q = btn.getAttribute('data-q');
-    const label = btn.textContent;
-    addMessage(label, 'user');
-    quickReplies.style.display = 'none';
-    botRespond(q);
-  });
-}
-
-/* ---------- THEME TOGGLE ---------- */
-(function initThemeToggle(){
-  const root   = document.documentElement;
-  const toggle = document.getElementById('themeToggle');
-  if(!toggle) return;
-  const icon = toggle.querySelector('i');
-
-  function initialTheme(){
-    try{
-      const saved = localStorage.getItem('theme');
-      if(saved === 'dark' || saved === 'light') return saved;
-    }catch(e){}
-    if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
-    return 'light';
+  function readStored() {
+    try { return localStorage.getItem(THEME_KEY); }
+    catch { return null; }
   }
 
-  function applyTheme(theme){
-    if(theme === 'dark'){
-      root.setAttribute('data-theme','dark');
-      icon.className = 'fa-solid fa-sun';
-      toggle.setAttribute('aria-label','Switch to light mode');
-    } else {
-      root.removeAttribute('data-theme');
-      icon.className = 'fa-solid fa-moon';
-      toggle.setAttribute('aria-label','Switch to dark mode');
+  function preferSystem() {
+    const mq = window.matchMedia?.('(prefers-color-scheme: dark)');
+    return mq?.matches ? 'dark' : 'light';
+  }
+
+  function resolveInitial() {
+    const saved = readStored();
+    if (saved === 'dark' || saved === 'light') return saved;
+    return preferSystem();
+  }
+
+  function apply(theme) {
+    const isDark = theme === 'dark';
+    if (isDark) root.setAttribute('data-theme', 'dark');
+    else root.removeAttribute('data-theme');
+
+    const toggle = $('#themeToggle');
+    const icon = toggle?.querySelector('i');
+    if (icon) icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    if (toggle) toggle.setAttribute(
+      'aria-label',
+      isDark ? 'Switch to light mode' : 'Switch to dark mode'
+    );
+  }
+
+  function init() {
+    // Anti-flash: apply before paint — call as early as possible.
+    apply(resolveInitial());
+
+    const toggle = $('#themeToggle');
+    on(toggle, 'click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      apply(next);
+      try { localStorage.setItem(THEME_KEY, next); } catch { /* ignore */ }
+    });
+  }
+
+  return { init, apply, resolveInitial };
+})();
+
+// Anti-flash bootstrap (run immediately, before DOM ready).
+(function antiFlashTheme() {
+  try {
+    if (localStorage.getItem(THEME_KEY) === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  } catch { /* ignore */ }
+})();
+
+/* ---------- 4. ROUTER + NAV + SCROLL PROGRESS ---------- */
+const Router = (() => {
+  const nav = $('#nav');
+  const progress = $('#scrollProgress');
+
+  function showPage(name) {
+    $$('.page').forEach(p => p.classList.remove('active'));
+    const target = $('#page-' + name);
+    if (target) target.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'auto' });
+    updateNav();
+    Reveal.refresh();
+  }
+
+  function goProducts() {
+    showPage('home');
+    setTimeout(() => {
+      $('#products')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 60);
+  }
+
+  function updateNav() {
+    if (!nav) return;
+    nav.classList.toggle('scrolled', window.scrollY > CONFIG.navScrollThreshold);
+
+    if (progress) {
+      const docH = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docH > 0 ? (window.scrollY / docH) * 100 : 0;
+      progress.style.width = pct + '%';
     }
   }
 
-  applyTheme(initialTheme());
+  function init() {
+    on(window, 'scroll', updateNav, { passive: true });
+    on(window, 'resize', updateNav);
+    updateNav();
+  }
 
-  toggle.addEventListener('click', () => {
-    const isDark = root.getAttribute('data-theme') === 'dark';
-    const next = isDark ? 'light' : 'dark';
-    applyTheme(next);
-    try{ localStorage.setItem('theme', next); }catch(e){}
-  });
+  return { init, showPage, goProducts, updateNav };
 })();
 
-/* ---------- "ASK FOR PRICE" → OPEN CHAT + PRE-FILL ---------- */
-(function initAskPrice(){
-  document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.ask-price');
-    if(!btn) return;
+/* ---------- 5. PARALLAX ---------- */
+const Parallax = (() => {
+  const heroBg = $('#heroBg');
 
-    const product = btn.getAttribute('data-product') || 'this product';
-    const message = 'Hi! Pila ang presyo sa ' + product + '?';
+  function initHero() {
+    if (!heroBg || REDUCE_MOTION) return;
+    let ticking = false;
 
-    openChat();
-    if(quickReplies) quickReplies.style.display = 'none';
-    chatInput.value = message;
+    on(window, 'scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        if (y < window.innerHeight * 1.3) {
+          heroBg.style.transform =
+            `translate3d(0,${y * CONFIG.heroParallaxRate}px,0) scale(1.05)`;
+        }
+        ticking = false;
+      });
+    }, { passive: true });
+  }
 
+  function initCards() {
+    const els = $$('[data-parallax]');
+    if (!els.length || REDUCE_MOTION) return;
+
+    let mx = 0, my = 0, tx = 0, ty = 0;
+
+    on(document, 'mousemove', (e) => {
+      tx = (e.clientX - window.innerWidth / 2)  / (window.innerWidth  / 2);
+      ty = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+    });
+
+    function frame() {
+      mx += (tx - mx) * CONFIG.parallaxEase;
+      my += (ty - my) * CONFIG.parallaxEase;
+      const sc = window.scrollY;
+
+      els.forEach(el => {
+        const rate  = parseFloat(el.dataset.parallax) || 0.1;
+        const depth = parseFloat(el.dataset.depth)    || 1;
+        const x = mx * CONFIG.cardParallaxDepthX * depth;
+        const y = my * CONFIG.cardParallaxDepthY * depth - sc * rate * CONFIG.cardParallaxRate;
+        el.style.transform = `translate3d(${x.toFixed(2)}px,${y.toFixed(2)}px,0)`;
+      });
+      requestAnimationFrame(frame);
+    }
+    frame();
+  }
+
+  function init() {
+    initHero();
+    initCards();
+  }
+
+  return { init };
+})();
+
+/* ---------- 6. SNOW ---------- */
+const Snow = (() => {
+  function init() {
+    const snow = $('#snow');
+    if (!snow || REDUCE_MOTION) return;
+
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < CONFIG.snowCount; i++) {
+      const el = document.createElement('i');
+      const icon = CONFIG.snowIcons[Math.floor(Math.random() * CONFIG.snowIcons.length)];
+      el.className = `fa-solid ${icon}`;
+      el.style.left            = `${Math.random() * 100}%`;
+      el.style.fontSize        = `${8 + Math.random() * 14}px`;
+      el.style.animationDuration = `${9 + Math.random() * 12}s`;
+      el.style.animationDelay    = `${Math.random() * 12}s`;
+      el.style.opacity           = (0.25 + Math.random() * 0.4).toFixed(2);
+      frag.appendChild(el);
+    }
+    snow.appendChild(frag);
+  }
+
+  return { init };
+})();
+
+/* ---------- 7. SCROLL REVEAL ---------- */
+const Reveal = (() => {
+  let observer;
+
+  function addAll(items) {
+    items.forEach(el => el.classList.add('in'));
+  }
+
+  function refresh() {
+    const items = $$('.page.active .reveal');
+
+    if (!('IntersectionObserver' in window)) {
+      addAll(items);
+      return;
+    }
+
+    observer?.disconnect();
+    observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: CONFIG.revealThreshold,
+      rootMargin: CONFIG.revealRootMargin,
+    });
+
+    items
+      .filter(el => !el.classList.contains('in'))
+      .forEach(el => observer.observe(el));
+  }
+
+  return { refresh };
+})();
+
+/* ---------- 8. CHATBOT ---------- */
+const Chatbot = (() => {
+  /* ---- Pure logic (testable) ---- */
+  const KB = {
+    products: "We carry a full frozen line: 🍤 Tempura, 🍟 French Fries, 🥟 Siomai & Siopao, 🐟 Tuna & Boneless Bangus, 🌭 Chorizo & Lumpia, plus 💧 InJoy Powders for Milk Tea, Shakes, Palamig, and Ice Scramble. Which one are you interested in?",
+    location: "📍 Main branch: Tamin Building, Barangay 5, Moreno St., Malaybalay City, Bukidnon. Second branch: F. Donggalo Building, Purok 2, Sayre Highway, Valencia City, Bukidnon. Look for the ANF Frozenhaus sign!",
+    prices:   "💰 For the latest price list, please visit our store or send us a message on our Facebook page (facebook.com/anffrozenhaus). We'd be happy to send you a quote for bulk orders!",
+    hours:    "🕒 Store hours may vary, so please check our Facebook page for the latest schedule. We'd love to see you!",
+    delivery: "🚚 For delivery and pickup arrangements, please message us on Facebook so we can confirm availability and logistics for your area.",
+    payment:  "💳 Please message us on Facebook to confirm accepted payment methods and terms for bulk orders.",
+    reseller: "🤝 Yes! We welcome resellers and food businesses. Message us on Facebook to discuss reseller pricing and minimum order quantities.",
+    greeting: "Kumusta! 👋 Welcome to ANF Frozenhaus — Ang Imong Partner sa Negosyo. Ask me about our products, location, prices, or store hours!",
+    thanks:   "You're very welcome! 😊 Salamat for choosing ANF Frozenhaus. Anything else I can help you with?",
+    fallback: "Salamat for your message! For specific inquiries, please message our Facebook page or visit us in store. Is there anything else I can help you with?",
+  };
+
+  // Order matters — first match wins.
+  const INTENTS = [
+    { key: 'prices',   re: /(price|presyo|pila|magkano|cost|rate)/ },
+    { key: 'location', re: /(location|where|asa|saan|address|find|store|branch)/ },
+    { key: 'hours',    re: /(hour|open|close|schedule|time|oras)/ },
+    { key: 'delivery', re: /(deliver|ship|pickup|pick up)/ },
+    { key: 'payment',  re: /(payment|pay|gcash|cash|maya)/ },
+    { key: 'reseller', re: /(reseller|wholesale|bulk|business|partner|retail)/ },
+    { key: 'products', re: /(product|menu|item|tempura|fries|siomai|siopao|tuna|bangus|chorizo|lumpia|injoy|milk tea|shake)/ },
+    { key: 'greeting', re: /(hi|hello|hey|kumusta|good morning|good afternoon|good evening)/ },
+    { key: 'thanks',   re: /(thank|salamat|thanks)/ },
+  ];
+
+  function pickIntent(text) {
+    const t = String(text).toLowerCase();
+    const match = INTENTS.find(intent => intent.re.test(t));
+    return match ? match.key : 'fallback';
+  }
+
+  function getReply(text) {
+    return KB[pickIntent(text)] ?? KB.fallback;
+  }
+
+  /* ---- DOM-bound UI ---- */
+  const els = {
+    toggle:       $('#chatToggle'),
+    window:       $('#chatWindow'),
+    close:        $('#chatClose'),
+    body:         $('#chatBody'),
+    form:         $('#chatForm'),
+    input:        $('#chatInput'),
+    send:         $('#chatSend'),
+    quickReplies: $('#quickReplies'),
+  };
+
+  function setChatOpen(isOpen) {
+    if (!els.window) return;
+    els.window.classList.toggle('open', isOpen);
+
+    const dot = els.toggle?.querySelector('.dot');
+    if (dot && isOpen) dot.style.display = 'none';
+
+    if (isOpen) setTimeout(() => els.input?.focus(), CONFIG.chatFocusDelayMs);
+  }
+
+  function hideQuickReplies() {
+    if (els.quickReplies) els.quickReplies.style.display = 'none';
+  }
+
+  function appendNode(node) {
+    if (!els.body) return;
+    els.body.appendChild(node);
+    els.body.scrollTop = els.body.scrollHeight;
+  }
+
+  function addMessage(text, sender) {
+    const div = document.createElement('div');
+    div.className = `msg ${sender}`;
+    if (sender === 'user') div.textContent = text;      // safe by default
+    else                   div.innerHTML  = text;       // bot uses trusted KB HTML
+    appendNode(div);
+    return div;
+  }
+
+  function showTyping() {
+    const div = document.createElement('div');
+    div.className = 'msg bot typing';
+    div.innerHTML = '<span></span><span></span><span></span>';
+    appendNode(div);
+    return div;
+  }
+
+  function botRespond(userText) {
+    const typingEl = showTyping();
+    const delay = CONFIG.botThinkMinMs + Math.random() * CONFIG.botThinkJitterMs;
     setTimeout(() => {
-      chatInput.focus();
-      const len = chatInput.value.length;
-      chatInput.setSelectionRange(len, len);
-    }, 340);
-  });
+      typingEl.remove();
+      addMessage(getReply(userText), 'bot');
+    }, delay);
+  }
+
+  function sendUserMessage(text) {
+    const clean = text.trim();
+    if (!clean) return;
+    addMessage(clean, 'user');
+    if (els.input) els.input.value = '';
+    hideQuickReplies();
+    botRespond(clean);
+  }
+
+  function init() {
+    on(els.toggle, 'click', () => {
+      const willOpen = !els.window?.classList.contains('open');
+      setChatOpen(willOpen);
+    });
+
+    on(els.close, 'click', () => setChatOpen(false));
+
+    on(els.form, 'submit', (e) => {
+      e.preventDefault();
+      sendUserMessage(els.input?.value ?? '');
+    });
+
+    on(els.send, 'click', (e) => {
+      e.preventDefault();
+      sendUserMessage(els.input?.value ?? '');
+    });
+
+    on(els.quickReplies, 'click', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      const q = btn.getAttribute('data-q');
+      addMessage(btn.textContent, 'user');
+      hideQuickReplies();
+      botRespond(q);
+    });
+  }
+
+  return { init, getReply, pickIntent, sendUserMessage, open: () => setChatOpen(true) };
 })();
 
-/* ---------- INIT ---------- */
-window.addEventListener('load', observeReveals);
-observeReveals();
+/* ---------- 9. ASK-PRICE ---------- */
+const AskPrice = (() => {
+  const FOCUS_DELAY = 340;
+
+  function init() {
+    on(document, 'click', (e) => {
+      const btn = e.target.closest('.ask-price');
+      if (!btn) return;
+
+      const product = btn.getAttribute('data-product') || 'this product';
+      const message = `Hi! Pila ang presyo sa ${product}?`;
+
+      Chatbot.open();
+      if (Chatbot.hideQuickReplies) Chatbot.hideQuickReplies();
+
+      const input = $('#chatInput');
+      if (input) input.value = message;
+
+      setTimeout(() => {
+        if (!input) return;
+        input.focus();
+        const len = input.value.length;
+        input.setSelectionRange(len, len);
+      }, FOCUS_DELAY);
+    });
+  }
+
+  return { init };
+})();
+
+/* ---------- 10. BOOT ---------- */
+function init() {
+  Theme.init();
+  Router.init();
+  Parallax.init();
+  Snow.init();
+  Reveal.refresh();
+  Chatbot.init();
+  AskPrice.init();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init, { once: true });
+} else {
+  init();
+}
+
+window.addEventListener('load', () => Reveal.refresh());
