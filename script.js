@@ -1,8 +1,3 @@
-/* ============================================================
-   script.js  —  ANF Frozenhaus
-   Router, parallax, reveal, chatbot, theme toggle, ask-price.
-============================================================ */
-
 /* ---------- ANTI-FLASH THEME ---------- */
 (function(){
   try{
