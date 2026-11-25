@@ -1,0 +1,816 @@
+<!-- ============================================================
+     html.html  —  ANF Frozenhaus
+     Structure only. Styles live in style.css, logic in script.js.
+============================================================ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <title>ANF Frozenhaus | Ang Imong Partner sa Negosyo</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- Scroll progress -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- ==================== NAVBAR ==================== -->
+<nav class="nav" id="nav">
+  <a href="#" class="logo" onclick="showPage('home');return false;">
+    <img src="logo.png" alt="ANF Frozenhaus Logo" class="brand-logo" onerror="this.style.display='none'">
+    <span class="logo-text"><b>ANF</b><i>FROZENHAUS</i></span>
+  </a>
+
+  <div class="nav-links">
+    <button class="nav-link" onclick="showPage('home')">Home</button>
+    <button class="nav-link" onclick="goProducts()">Products</button>
+    <button class="nav-link" onclick="showPage('catalog')">Catalog</button>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+      <i class="fa-solid fa-moon"></i>
+    </button>
+    <button class="nav-cta" onclick="showPage('catalog')">
+      <span>Full Menu</span> <i class="fa-solid fa-arrow-right"></i>
+    </button>
+  </div>
+</nav>
+
+<!-- ==================== HOME PAGE ==================== -->
+<div class="page active" id="page-home">
+
+  <!-- ---------- HERO ---------- -->
+  <header class="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-veil"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="snow" id="snow"></div>
+
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <div class="hero-badge">
+          <i class="fa-solid fa-snowflake"></i> Malaybalay &amp; Valencia, Bukidnon
+        </div>
+
+        <h1>Your business partner in <em>frozen food</em>.</h1>
+        <p class="tagline">"Ang Imong Partner sa Negosyo"</p>
+        <p class="hero-sub">
+          Premium frozen products and beverage ingredients trusted by local food
+          businesses — from tempura and siomai to InJoy powders for your milk tea shop.
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn btn-primary" onclick="goProducts()">
+            Explore Products <i class="fa-solid fa-arrow-right"></i>
+          </button>
+          <button class="btn btn-ghost" onclick="showPage('catalog')">
+            <i class="fa-solid fa-book-open"></i> View Full Catalog
+          </button>
+        </div>
+
+        <ul class="hero-stats">
+          <li><strong>40+</strong><span>Products stocked</span></li>
+          <li><strong>2</strong><span>Branches</span></li>
+          <li><strong>100%</strong><span>Cold chain</span></li>
+        </ul>
+      </div>
+
+      <div class="hero-art" aria-hidden="true">
+        <div class="art-glow"></div>
+        <div class="art-ring" data-parallax="0.05"><div class="art-ring-spin"></div></div>
+
+        <div class="art-card art-card--main" data-parallax="0.14" data-depth="0.9">
+          <div class="art-ic"><i class="fa-solid fa-shrimp"></i></div>
+          <div class="art-txt">
+            <strong>Tempura</strong>
+            <span><i class="fa-solid fa-circle"></i> Best seller</span>
+          </div>
+        </div>
+
+        <div class="art-card art-card--mini" data-parallax="0.22" data-depth="1.4">
+          <i class="fa-solid fa-blender"></i> <span>InJoy powders</span>
+        </div>
+
+        <div class="art-chip" data-parallax="0.30" data-depth="1.9">
+          <i class="fa-solid fa-truck-fast"></i> Same-day pickup
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <i class="fa-solid fa-chevron-down"></i>
+    </div>
+  </header>
+
+  <!-- ---------- MARQUEE ---------- -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Tempura <i class="fa-solid fa-snowflake"></i></span>
+      <span>Siomai <i class="fa-solid fa-snowflake"></i></span>
+      <span>French Fries <i class="fa-solid fa-snowflake"></i></span>
+      <span>Siopao <i class="fa-solid fa-snowflake"></i></span>
+      <span>Milk Tea Powder <i class="fa-solid fa-snowflake"></i></span>
+      <span>Lumpia <i class="fa-solid fa-snowflake"></i></span>
+      <span>Tuna <i class="fa-solid fa-snowflake"></i></span>
+      <span>Boneless Bangus <i class="fa-solid fa-snowflake"></i></span>
+      <span>Ice Scramble <i class="fa-solid fa-snowflake"></i></span>
+      <span>Chorizo <i class="fa-solid fa-snowflake"></i></span>
+
+      <span>Tempura <i class="fa-solid fa-snowflake"></i></span>
+      <span>Siomai <i class="fa-solid fa-snowflake"></i></span>
+      <span>French Fries <i class="fa-solid fa-snowflake"></i></span>
+      <span>Siopao <i class="fa-solid fa-snowflake"></i></span>
+      <span>Milk Tea Powder <i class="fa-solid fa-snowflake"></i></span>
+      <span>Lumpia <i class="fa-solid fa-snowflake"></i></span>
+      <span>Tuna <i class="fa-solid fa-snowflake"></i></span>
+      <span>Boneless Bangus <i class="fa-solid fa-snowflake"></i></span>
+      <span>Ice Scramble <i class="fa-solid fa-snowflake"></i></span>
+      <span>Chorizo <i class="fa-solid fa-snowflake"></i></span>
+    </div>
+  </div>
+
+  <!-- ---------- PRODUCTS (best sellers) ---------- -->
+  <section class="section products" id="products">
+    <div class="section-head reveal">
+      <div class="eyebrow"><i class="fa-solid fa-star"></i> Best sellers</div>
+      <h2>Frozen favorites, <span class="hl">ready for business</span></h2>
+      <p>High-quality ingredients sourced and stored with care — so your kitchen never runs out.</p>
+    </div>
+
+    <div class="product-grid">
+      <article class="product-card reveal" style="--d:.00s">
+        <span class="num">01</span>
+        <div class="product-icon"><i class="fa-solid fa-shrimp"></i></div>
+        <h3>Tempura</h3>
+        <p>Crispy, ready-to-fry tempura — a menu staple for any food stall or restaurant.</p>
+        <span class="product-tag">Best Seller</span>
+      </article>
+
+      <article class="product-card reveal" style="--d:.06s">
+        <span class="num">02</span>
+        <div class="product-icon"><i class="fa-solid fa-french-fries"></i></div>
+        <h3>French Fries</h3>
+        <p>Classic-cut fries with consistent quality, perfect for sides and snack packs.</p>
+        <span class="product-tag">Snack Favorite</span>
+      </article>
+
+      <article class="product-card reveal" style="--d:.12s">
+        <span class="num">03</span>
+        <div class="product-icon"><i class="fa-solid fa-dumpling"></i></div>
+        <h3>Siomai &amp; Siopao</h3>
+        <p>Steamed favorites, ready to serve.</p>
+        <span class="product-tag">Ready to Serve</span>
+      </article>
+
+      <article class="product-card reveal" style="--d:.18s">
+        <span class="num">04</span>
+        <div class="product-icon"><i class="fa-solid fa-fish"></i></div>
+        <h3>Bangus &amp; Tuna</h3>
+        <p>Fresh-frozen seafood, cleaned and prepared.</p>
+        <span class="product-tag">Seafood</span>
+      </article>
+
+      <article class="product-card reveal" style="--d:.24s">
+        <span class="num">05</span>
+        <div class="product-icon"><i class="fa-solid fa-blender"></i></div>
+        <h3>InJoy Powders</h3>
+        <p>Complete powder mixes for Milk Tea, Shakes, Palamig, and Ice Scramble.</p>
+        <span class="product-tag">Beverage Line</span>
+      </article>
+
+      <article class="product-card reveal" style="--d:.30s">
+        <span class="num">06</span>
+        <div class="product-icon"><i class="fa-solid fa-sausage"></i></div>
+        <h3>Chorizo &amp; Lumpia</h3>
+        <p>Savory processed meats with authentic local flavor — great for reselling.</p>
+        <span class="product-tag">Local Taste</span>
+      </article>
+    </div>
+
+    <div class="center-cta reveal">
+      <button class="btn btn-primary" onclick="showPage('catalog')">
+        See the Full Product Catalog <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- ---------- OUR STORY ---------- -->
+  <section class="section story">
+    <div class="story-grid">
+      <div class="story-visual reveal">
+        <img
+          src="https://images.unsplash.com/photo-1601598851547-4302969d0614?auto=format&fit=crop&w=1000&q=80"
+          alt="Frozen food supplier storefront"
+          onerror="this.style.display='none'"
+        />
+        <div class="badge-float"><i class="fa-solid fa-seedling"></i> Since 2019</div>
+      </div>
+
+      <div class="story-text reveal" style="--d:.1s">
+        <div class="eyebrow"><i class="fa-solid fa-book-open"></i> Our story</div>
+        <h2>From a small freezer to <span class="hl">Bukidnon's partner</span></h2>
+        <p>
+          ANF Frozenhaus started with a simple idea: give local food businesses a reliable
+          source of quality frozen products without the hassle of long trips to the city.
+          What began as a single freezer in Malaybalay has grown into a trusted supplier
+          for carenderias, milk tea shops, and resellers across Bukidnon.
+        </p>
+        <p>
+          Today we operate two branches and stock everything from tempura and siomai to
+          InJoy beverage powders — all kept at the right temperature from delivery to your
+          kitchen.
+        </p>
+
+        <div class="timeline">
+          <div class="tl-item">
+            <em>2019</em>
+            <strong>The first freezer</strong>
+            <span>Opened our first stall in Malaybalay with a small frozen snack lineup.</span>
+          </div>
+          <div class="tl-item">
+            <em>2021</em>
+            <strong>Milk tea line added</strong>
+            <span>Partnered with InJoy to supply powders for the growing milk tea scene.</span>
+          </div>
+          <div class="tl-item">
+            <em>2023</em>
+            <strong>Valencia branch opens</strong>
+            <span>Expanded to a second location along Sayre Highway to serve more partners.</span>
+          </div>
+          <div class="tl-item">
+            <em>Today</em>
+            <strong>40+ products in stock</strong>
+            <span>Supporting restaurants, resellers, and home cooks across the province.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- FEATURED CATEGORIES ---------- -->
+  <section class="section categories">
+    <div class="section-head reveal">
+      <div class="eyebrow"><i class="fa-solid fa-layer-group"></i> Featured categories</div>
+      <h2>Explore our <span class="hl">four main lines</span></h2>
+      <p>From crispy frozen snacks to complete beverage mixes — everything your business needs in one cold chain.</p>
+    </div>
+
+    <div class="cat-cards">
+      <div class="cat-card reveal" onclick="showPage('catalog')" style="--d:.00s">
+        <img src="https://images.unsplash.com/photo-1615361200141-f45040f367be?auto=format&fit=crop&w=1200&q=80" alt="Frozen snacks" onerror="this.style.display='none'">
+        <div class="cat-card-inner">
+          <span class="tag"><i class="fa-solid fa-drumstick-bite"></i> Frozen snacks</span>
+          <h3>Tempura, fries &amp; more</h3>
+          <p>Crispy, ready-to-fry favorites that keep your menu consistent from opening to closing.</p>
+          <span class="more">Browse snacks <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+      </div>
+
+      <div class="cat-card reveal" onclick="showPage('catalog')" style="--d:.08s">
+        <img src="https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=1200&q=80" alt="Processed meats" onerror="this.style.display='none'">
+        <div class="cat-card-inner">
+          <span class="tag"><i class="fa-solid fa-sausage"></i> Processed meats</span>
+          <h3>Chorizo &amp; lumpia</h3>
+          <p>Local-flavored processed meats — perfect for breakfast plates, silog meals, and reselling.</p>
+          <span class="more">Browse meats <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+      </div>
+
+      <div class="cat-card reveal" onclick="showPage('catalog')" style="--d:.16s">
+        <img src="https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?auto=format&fit=crop&w=1200&q=80" alt="Seafood" onerror="this.style.display='none'">
+        <div class="cat-card-inner">
+          <span class="tag"><i class="fa-solid fa-fish"></i> Seafood</span>
+          <h3>Tuna &amp; boneless bangus</h3>
+          <p>Cleaned, deboned, and frozen at peak freshness — ready for your kitchen.</p>
+          <span class="more">Browse seafood <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+      </div>
+
+      <div class="cat-card reveal" onclick="showPage('catalog')" style="--d:.24s">
+        <img src="https://images.unsplash.com/photo-1558857563-b371033873b8?auto=format&fit=crop&w=1200&q=80" alt="Beverage ingredients" onerror="this.style.display='none'">
+        <div class="cat-card-inner">
+          <span class="tag"><i class="fa-solid fa-blender"></i> Beverage line</span>
+          <h3>InJoy powders</h3>
+          <p>Complete mixes for milk tea, shakes, palamig, and ice scramble — just add water and ice.</p>
+          <span class="more">Browse powders <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- PROCESS ---------- -->
+  <section class="section process">
+    <div class="section-head reveal">
+      <div class="eyebrow"><i class="fa-solid fa-route"></i> How it works</div>
+      <h2>From freezer to your kitchen in 4 steps</h2>
+      <p>A simple, reliable cold chain so your ingredients arrive exactly as they should.</p>
+    </div>
+
+    <div class="process-grid">
+      <div class="step reveal" style="--d:.00s">
+        <span class="step-num">Step 01</span>
+        <div class="step-ic"><i class="fa-solid fa-comments"></i></div>
+        <h4>Tell us your needs</h4>
+        <p>Message us on Facebook or visit a branch and share your product list and quantities.</p>
+      </div>
+      <div class="step reveal" style="--d:.08s">
+        <span class="step-num">Step 02</span>
+        <div class="step-ic"><i class="fa-solid fa-snowflake"></i></div>
+        <h4>We prepare &amp; freeze</h4>
+        <p>Your order is picked and packed from our cold storage at the right temperature.</p>
+      </div>
+      <div class="step reveal" style="--d:.16s">
+        <span class="step-num">Step 03</span>
+        <div class="step-ic"><i class="fa-solid fa-truck-fast"></i></div>
+        <h4>Pickup or delivery</h4>
+        <p>Collect at the branch or arrange delivery for your area — we confirm logistics with you.</p>
+      </div>
+      <div class="step reveal" style="--d:.24s">
+        <span class="step-num">Step 04</span>
+        <div class="step-ic"><i class="fa-solid fa-utensils"></i></div>
+        <h4>Cook &amp; serve</h4>
+        <p>Your kitchen keeps running with consistent quality — and we're here for the next order.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- ABOUT ---------- -->
+  <section class="section about">
+    <div class="about-grid">
+      <div class="about-visual reveal">
+        <img
+          src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1000&q=80"
+          alt="Frozen food selection"
+          onerror="this.style.display='none'"
+        />
+        <div class="about-float">
+          <div class="af-ic"><i class="fa-solid fa-snowflake"></i></div>
+          <div>
+            <strong>Always frozen-fresh</strong>
+            <span>Stored at the right temperature</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-text reveal" style="--d:.1s">
+        <div class="eyebrow"><i class="fa-solid fa-handshake"></i> Why ANF Frozenhaus</div>
+        <h2>Built to be your <span class="hl">business partner</span></h2>
+        <p>
+          We supply restaurants, carenderias, milk tea shops, and resellers with
+          reliable frozen products at competitive prices. Here's what sets us apart.
+        </p>
+
+        <div class="feature-list">
+          <div class="feature">
+            <i class="fa-solid fa-snowflake"></i>
+            <div>
+              <strong>Consistent frozen quality</strong>
+              <span>Properly stored products that keep their taste and texture.</span>
+            </div>
+          </div>
+          <div class="feature">
+            <i class="fa-solid fa-boxes-stacked"></i>
+            <div>
+              <strong>Wide product range</strong>
+              <span>Snacks, seafood, processed meats, and beverage powders in one place.</span>
+            </div>
+          </div>
+          <div class="feature">
+            <i class="fa-solid fa-handshake"></i>
+            <div>
+              <strong>Partner-first service</strong>
+              <span>Friendly assistance for bulk orders and reseller inquiries.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- GALLERY ---------- -->
+  <section class="section gallery">
+    <div class="section-head reveal">
+      <div class="eyebrow"><i class="fa-solid fa-images"></i> Inside the haus</div>
+      <h2>A peek at <span class="hl">what we stock</span></h2>
+      <p>Real products, real cold storage — the everyday lineup our partners rely on.</p>
+    </div>
+
+    <div class="gallery-grid">
+      <div class="gallery-item reveal" style="--d:.00s">
+        <img src="https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=1000&q=80" alt="Frozen food display" onerror="this.style.display='none'">
+      </div>
+      <div class="gallery-item reveal" style="--d:.05s">
+        <img src="https://images.unsplash.com/photo-1496116218417-1a781b1c416c?auto=format&fit=crop&w=800&q=80" alt="Dumplings" onerror="this.style.display='none'">
+      </div>
+      <div class="gallery-item reveal" style="--d:.10s">
+        <img src="https://images.unsplash.com/photo-1556909212-d5b604d0c90d?auto=format&fit=crop&w=800&q=80" alt="Frozen fries" onerror="this.style.display='none'">
+      </div>
+      <div class="gallery-item reveal" style="--d:.15s">
+        <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=1000&q=80" alt="Frozen food shelf" onerror="this.style.display='none'">
+      </div>
+      <div class="gallery-item reveal" style="--d:.20s">
+        <img src="https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?auto=format&fit=crop&w=800&q=80" alt="Ice scramble dessert" onerror="this.style.display='none'">
+      </div>
+      <div class="gallery-item reveal" style="--d:.25s">
+        <img src="https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=800&q=80" alt="Cold storage" onerror="this.style.display='none'">
+      </div>
+      <div class="gallery-item reveal" style="--d:.30s">
+        <img src="https://images.unsplash.com/photo-1558857563-b371033873b8?auto=format&fit=crop&w=1000&q=80" alt="Milk tea" onerror="this.style.display='none'">
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- BRANCHES ---------- -->
+  <section class="section branches">
+    <div class="section-head reveal">
+      <div class="eyebrow"><i class="fa-solid fa-location-dot"></i> Visit us</div>
+      <h2>Two branches, <span class="hl">one cold chain</span></h2>
+      <p>Drop by either location — our team will help you with bulk orders and reseller pricing.</p>
+    </div>
+
+    <div class="branch-grid">
+      <div class="branch-card reveal" style="--d:.00s">
+        <div class="branch-img">
+          <img src="https://images.unsplash.com/photo-1601598851547-4302969d0614?auto=format&fit=crop&w=1000&q=80" alt="Malaybalay main branch" onerror="this.style.display='none'">
+          <span class="pin"><i class="fa-solid fa-star"></i> Main branch</span>
+        </div>
+        <div class="branch-body">
+          <h4>Malaybalay City</h4>
+          <div class="kind">Bukidnon · Main</div>
+          <p>Tamin Building, Barangay 5, Moreno St., Malaybalay City, Bukidnon.</p>
+          <div class="row"><i class="fa-solid fa-clock"></i><span><strong>Open daily</strong> — check Facebook for current hours</span></div>
+          <div class="row"><i class="fa-solid fa-phone"></i><span>Message us on Facebook for the latest schedule</span></div>
+          <div class="branch-actions">
+            <button class="branch-btn" onclick="openChat()"><i class="fa-solid fa-comment-dots"></i> Ask about this branch</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="branch-card reveal" style="--d:.10s">
+        <div class="branch-img">
+          <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=1000&q=80" alt="Valencia branch" onerror="this.style.display='none'">
+          <span class="pin"><i class="fa-solid fa-location-dot"></i> Branch 2</span>
+        </div>
+        <div class="branch-body">
+          <h4>Valencia City</h4>
+          <div class="kind">Bukidnon · Sayre Highway</div>
+          <p>F. Donggalo Building, Purok 2, Sayre Highway, Valencia City, Bukidnon.</p>
+          <div class="row"><i class="fa-solid fa-clock"></i><span><strong>Open daily</strong> — check Facebook for current hours</span></div>
+          <div class="row"><i class="fa-solid fa-truck-fast"></i><span>Pickup and delivery arrangements available</span></div>
+          <div class="branch-actions">
+            <button class="branch-btn" onclick="openChat()"><i class="fa-solid fa-comment-dots"></i> Ask about this branch</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- TESTIMONIALS ---------- -->
+  <section class="section testimonials">
+    <div class="section-head reveal">
+      <div class="eyebrow"><i class="fa-solid fa-quote-left"></i> Partner stories</div>
+      <h2>What our <span class="hl">partners say</span></h2>
+      <p>Real feedback from the food businesses we supply every week.</p>
+    </div>
+
+    <div class="testi-grid">
+      <div class="testi-card reveal" style="--d:.00s">
+        <span class="testi-quote">"</span>
+        <div class="testi-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        <p>Their tempura and siomai are consistent every order — my customers noticed the quality right away. Pickup is always quick.</p>
+        <div class="testi-who">
+          <div class="testi-avatar">RC</div>
+          <div>
+            <strong>Rina C.</strong>
+            <span>Carenderia owner, Malaybalay</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card reveal" style="--d:.08s">
+        <span class="testi-quote">"</span>
+        <div class="testi-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        <p>We get all our InJoy powders from ANF. The flavors are reliable and the reseller pricing made it easy to start our milk tea stall.</p>
+        <div class="testi-who">
+          <div class="testi-avatar">JM</div>
+          <div>
+            <strong>Jomar M.</strong>
+            <span>Milk tea shop owner, Valencia</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card reveal" style="--d:.16s">
+        <span class="testi-quote">"</span>
+        <div class="testi-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        <p>As a reseller, I need stock that's always available. ANF keeps a steady supply of frozen items so I never have to turn down orders.</p>
+        <div class="testi-who">
+          <div class="testi-avatar">AL</div>
+          <div>
+            <strong>Ana L.</strong>
+            <span>Frozen food reseller</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- FAQ ---------- -->
+  <section class="section faq">
+    <div class="section-head reveal">
+      <div class="eyebrow"><i class="fa-solid fa-circle-question"></i> FAQ</div>
+      <h2>Common <span class="hl">questions</span></h2>
+      <p>Quick answers before you order — for anything else, our chatbot is right here.</p>
+    </div>
+
+    <div class="faq-list">
+      <details class="faq-item reveal">
+        <summary>Do you accept bulk or reseller orders?</summary>
+        <div class="faq-a">Yes. We welcome resellers and food businesses. Message us on Facebook or open the chat to discuss reseller pricing and minimum order quantities.</div>
+      </details>
+
+      <details class="faq-item reveal" style="--d:.05s">
+        <summary>How do I get the latest price list?</summary>
+        <div class="faq-a">For the latest price list, visit either branch or send us a message on Facebook (facebook.com/anffrozenhaus). We're happy to send a quote for bulk orders.</div>
+      </details>
+
+      <details class="faq-item reveal" style="--d:.10s">
+        <summary>Do you deliver?</summary>
+        <div class="faq-a">Delivery and pickup arrangements depend on your area. Message us on Facebook so we can confirm availability and logistics before your order.</div>
+      </details>
+
+      <details class="faq-item reveal" style="--d:.15s">
+        <summary>What payment methods do you accept?</summary>
+        <div class="faq-a">Please message us on Facebook to confirm accepted payment methods and terms — especially for bulk and reseller orders.</div>
+      </details>
+
+      <details class="faq-item reveal" style="--d:.20s">
+        <summary>Where are your branches located?</summary>
+        <div class="faq-a">Main branch: Tamin Building, Barangay 5, Moreno St., Malaybalay City, Bukidnon. Second branch: F. Donggalo Building, Purok 2, Sayre Highway, Valencia City, Bukidnon.</div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ---------- CTA BAND ---------- -->
+  <section class="cta-band">
+    <div class="cta-inner reveal">
+      <div class="cta-orb cta-orb-1"></div>
+      <div class="cta-orb cta-orb-2"></div>
+      <h2>Ready to stock up?</h2>
+      <p>Browse the full catalog or talk to our team — we'll help you pick the right products for your business.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" onclick="showPage('catalog')">
+          Browse full catalog <i class="fa-solid fa-arrow-right"></i>
+        </button>
+        <button class="btn btn-ghost" onclick="openChat()">
+          <i class="fa-solid fa-comment-dots"></i> Chat with us
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- FOOTER ---------- -->
+  <footer>
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="logo">
+          <img src="logo.png" alt="ANF Frozenhaus Logo" class="brand-logo" onerror="this.style.display='none'">
+          <span class="logo-text"><b>ANF</b><i>FROZENHAUS</i></span>
+        </div>
+        <p>Ang Imong Partner sa Negosyo. Frozen food supply for businesses and homes in Bukidnon.</p>
+        <div class="foot-social">
+          <a href="https://www.facebook.com/anffrozenhaus/" target="_blank" rel="noopener" aria-label="Facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+          <a href="#" aria-label="Messenger"><i class="fa-brands fa-facebook-messenger"></i></a>
+          <a href="#" aria-label="Phone"><i class="fa-solid fa-phone"></i></a>
+        </div>
+      </div>
+
+      <div class="foot-col">
+        <h5>Explore</h5>
+        <a href="#" onclick="showPage('home');return false;">Home</a>
+        <a href="#" onclick="goProducts();return false;">Products</a>
+        <a href="#" onclick="showPage('catalog');return false;">Full Catalog</a>
+      </div>
+
+      <div class="foot-col">
+        <h5>Visit Us</h5>
+        <p>Tamin Building, Barangay 5<br>Moreno St.,<br>Malaybalay City, Bukidnon (Main Branch)</p>
+        <p>F. Donggalo Building, Purok 2,<br>Sayre Highway,<br>Valencia City, Bukidnon</p>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      &copy; 2025 ANF Frozenhaus. All Rights Reserved.
+    </div>
+  </footer>
+</div>
+
+<!-- ==================== CATALOG PAGE ==================== -->
+<div class="page" id="page-catalog">
+
+  <header class="catalog-hero">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="catalog-hero-inner">
+      <div class="eyebrow eyebrow--light"><i class="fa-solid fa-list-check"></i> Full product line</div>
+      <h1>Complete product catalog</h1>
+      <p>Everything we stock — frozen snacks, processed meats, seafood, and beverage ingredients for your business.</p>
+      <div class="catalog-chips">
+        <span class="chip"><i class="fa-solid fa-drumstick-bite"></i> Frozen snacks</span>
+        <span class="chip"><i class="fa-solid fa-sausage"></i> Processed meats</span>
+        <span class="chip"><i class="fa-solid fa-fish"></i> Seafood</span>
+        <span class="chip"><i class="fa-solid fa-blender"></i> Beverage ingredients</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="section catalog-body">
+
+    <!-- Frozen Snacks -->
+    <div class="cat-block reveal">
+      <div class="cat-title">
+        <span class="pill"><i class="fa-solid fa-drumstick-bite"></i></span>
+        Frozen Snacks
+        <small>4 items</small>
+      </div>
+      <div class="cat-grid">
+        <div class="cat-item">
+          <div class="ic"><i class="fa-solid fa-shrimp"></i></div>
+          <h4>Tempura</h4>
+          <p>Crispy battered shrimp-style tempura, ready to fry.</p>
+          <button class="price ask-price" data-product="Tempura">Ask for price <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="cat-item">
+          <div class="ic"><i class="fa-solid fa-french-fries"></i></div>
+          <h4>French Fries</h4>
+          <p>Classic-cut frozen fries for sides and snack packs.</p>
+          <button class="price ask-price" data-product="French Fries">Ask for price <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="cat-item">
+          <div class="ic"><i class="fa-solid fa-dumpling"></i></div>
+          <h4>Siomai</h4>
+          <p>Pork siomai, ready to steam and serve.</p>
+          <button class="price ask-price" data-product="Siomai">Ask for price <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="cat-item">
+          <div class="ic"><i class="fa-solid fa-bread-slice"></i></div>
+          <h4>Siopao</h4>
+          <p>Soft steamed buns with savory filling, ready to heat.</p>
+          <button class="price ask-price" data-product="Siopao">Ask for price <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Processed Meats -->
+    <div class="cat-block reveal">
+      <div class="cat-title">
+        <span class="pill"><i class="fa-solid fa-sausage"></i></span>
+        Processed Meats
+        <small>2 items</small>
+      </div>
+      <div class="cat-grid">
+        <div class="cat-item">
+          <div class="ic"><i class="fa-solid fa-sausage"></i></div>
+          <h4>Chorizo</h4>
+          <p>Savory local-style chorizo, great for breakfast plates and reselling.</p>
+          <button class="price ask-price" data-product="Chorizo">Ask for price <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="cat-item">
+          <div class="ic"><i class="fa-solid fa-bowl-food"></i></div>
+          <h4>Lumpia</h4>
+          <p>Frozen lumpia rolls, ready to fry for any occasion.</p>
+          <button class="price ask-price" data-product="Lumpia">Ask for price <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seafood -->
+    <div class="cat-block reveal">
+      <div class="cat-title">
+        <span class="pill"><i class="fa-solid fa-fish"></i></span>
+        Seafood
+        <small>2 items</small>
+      </div>
+      <div class="cat-grid">
+        <div class="cat-item">
+          <div class="ic"><i class="fa-solid fa-fish"></i></div>
+          <h4>Tuna</h4>
+          <p>Fresh-frozen tuna cuts for retail or food service.</p>
+          <button class="price ask-price" data-product="Tuna">Ask for price <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="cat-item">
+          <div class="ic"><i class="fa-solid fa-fish-fins"></i></div>
+          <h4>Boneless Bangus</h4>
+          <p>Deboned milkfish, cleaned and prepared for easy cooking.</p>
+          <button class="price ask-price" data-product="Boneless Bangus">Ask for price <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Beverage Ingredients -->
+    <div class="cat-block reveal">
+      <div class="cat-title">
+        <span class="pill"><i class="fa-solid fa-blender"></i></span>
+        Beverage Ingredients
+        <small>InJoy Powder Line</small>
+      </div>
+      <div class="cat-grid">
+        <div class="cat-item">
+          <div class="ic"><i class="fa-solid fa-mug-hot"></i></div>
+          <h4>InJoy Milk Tea Powder</h4>
+          <p>Complete powder mix for milk tea — just add water and ice.</p>
+          <button class="price ask-price" data-product="InJoy Milk Tea Powder">Ask for price <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="cat-item">
+          <div class="ic"><i class="fa-solid fa-ice-cream"></i></div>
+          <h4>InJoy Shake Powder</h4>
+          <p>Flavored shake mixes for quick, consistent servings.</p>
+          <button class="price ask-price" data-product="InJoy Shake Powder">Ask for price <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="cat-item">
+          <div class="ic"><i class="fa-solid fa-glass-water"></i></div>
+          <h4>InJoy Palamig Mix</h4>
+          <p>Refreshing palamig powder — a Filipino favorite.</p>
+          <button class="price ask-price" data-product="InJoy Palamig Mix">Ask for price <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="cat-item">
+          <div class="ic"><i class="fa-solid fa-snowflake"></i></div>
+          <h4>InJoy Ice Scramble</h4>
+          <p>Ice scramble powder mix, perfect for street-food style selling.</p>
+          <button class="price ask-price" data-product="InJoy Ice Scramble">Ask for price <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="center-cta">
+      <button class="btn btn-primary" onclick="showPage('home')">
+        <i class="fa-solid fa-arrow-left"></i> Back to Home
+      </button>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-bottom" style="border:none;padding-top:0;">
+      &copy; 2025 ANF Frozenhaus. All Rights Reserved.
+    </div>
+  </footer>
+</div>
+
+<!-- ==================== CHATBOT ==================== -->
+<div class="chatbot">
+  <div class="chat-window" id="chatWindow">
+    <div class="chat-head">
+      <div class="chat-avatar">
+        <img src="logo.png" alt="ANF" onerror="this.style.display='none'">
+      </div>
+      <div class="chat-head-info">
+        <strong>ANF Assistant</strong>
+        <span>Online now</span>
+      </div>
+      <button class="chat-close" id="chatClose" aria-label="Close chat">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="chat-body" id="chatBody">
+      <div class="msg bot">
+        Kumusta! 👋 Welcome to <strong>ANF Frozenhaus</strong>. How can I help you today?
+      </div>
+      <div class="quick-replies" id="quickReplies">
+        <button data-q="products">Products</button>
+        <button data-q="location">Location</button>
+        <button data-q="prices">Prices</button>
+        <button data-q="hours">Store hours</button>
+      </div>
+    </div>
+
+    <form class="chat-foot" id="chatForm" onsubmit="return false;">
+      <input type="text" id="chatInput" placeholder="Type a message..." autocomplete="off" />
+      <button type="submit" id="chatSend" aria-label="Send">
+        <i class="fa-solid fa-paper-plane"></i>
+      </button>
+    </form>
+  </div>
+
+  <button class="chat-toggle" id="chatToggle" aria-label="Open chat">
+    <i class="fa-solid fa-comment-dots"></i>
+    <span class="dot"></span>
+  </button>
+</div>
+
+<!-- Custom JavaScript -->
+<script src="script.js"></script>
+</body>
+</html>
